@@ -4,8 +4,8 @@ import { FaBloggerB, FaComments, FaUserFriends } from 'react-icons/fa'
 import { FaUser } from 'react-icons/fa6'
 import { IoSettings } from 'react-icons/io5'
 import { Link, useLocation } from 'react-router-dom'
-import Breadcrumb from '../Breadcrumb'
-// import { Online } from 'react-detect-offline';
+import BreadcrumbHeader from '../../BootCamp'
+
 
 const Layout = ({ children }) => {
     const location = useLocation()
@@ -16,7 +16,7 @@ const Layout = ({ children }) => {
 
     const menu = [
         { name: 'Dashboard', link: "/", icon: <AiFillDashboard className='w-full h-full' /> },
-        { name: 'Blogs', link: "/blog-page", icon: <FaBloggerB className='w-full h-full' /> },
+        { name: 'Blogs', link: "/blog", icon: <FaBloggerB className='w-full h-full' /> },
         { name: 'Comments', link: "/comments", icon: <FaComments className='w-full h-full' /> },
         { name: 'Setting', link: "/setting", icon: <IoSettings className='w-full h-full' /> },
         { name: 'Users', link: "/user", icon: <FaUserFriends className='w-full h-full' /> },
@@ -66,7 +66,7 @@ const Layout = ({ children }) => {
 
                 {/* Header */}
                 <header className='w-full bg-gray-800 h-16 flex items-center px-8 justify-between text-white shadow-md z-20'>
-                    <h1 className='text-2xl font-bold  capitalize '><Breadcrumb /></h1>
+                    <BreadcrumbHeader />
 
                     <div className="relative flex items-center gap-3">
                         {/* Icon / Trigger */}
@@ -95,7 +95,7 @@ const Layout = ({ children }) => {
                 </header>
 
                 {/* Content */}
-                <main className='flex-1 overflow-y-auto bg-gray-900 p-6 text-white'>
+                <main className='flex-1 overflow-y-auto bg-gray-900 px-6 text-white'>
                     {children}
                 </main>
             </div>
@@ -104,3 +104,6 @@ const Layout = ({ children }) => {
 }
 
 export default Layout
+
+
+
