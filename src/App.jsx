@@ -5,17 +5,40 @@ import Dashboard from "./components/admin/Dashboard/Dashboard"
 import PageNotFound from "./components/PageNotFound"
 import BlogPage from "./components/admin/Blog/BlogPage"
 import Layout from "./components/admin/Layout/Layout"
+import CreatePost from "./components/admin/Blog/CreateBlog/CreatePost"
+import MediaPage from "./components/admin/Media/MediaPage"
+import UploadMedia from "./components/admin/Media/UploadMedia"
+import DraftPage from "./components/admin/Draft/DraftPage"
 
 const App = () => {
   return <BrowserRouter>
 
     <Routes>
+      {/* home page  */}
       <Route path="/" element={<Dashboard />} />
+
+      {/* login page */}
       <Route path="/login" element={<SignInPage />} />
+
+      {/* media */}
+      <Route path="/media-file" element={<MediaPage />} />
+      <Route path="/media-file/upload" element={<UploadMedia />} />
+
+      {/* blog page  */}
       <Route path="/blog" element={<BlogPage />} />
+
+      {/* add blog */}
+      <Route path="/blog/create" element={<CreatePost />} />
+
+      {/* draft */}
+      <Route path="/draft" element={<DraftPage />} />
+
+      {/* view blog */}
       <Route path="/blog/:slug" element={<Layout>
         1
       </Layout>} />
+
+
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   </BrowserRouter>

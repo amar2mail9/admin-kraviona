@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { AiFillDashboard } from 'react-icons/ai'
-import { FaBloggerB, FaComments, FaUserFriends } from 'react-icons/fa'
-import { FaUser } from 'react-icons/fa6'
+import { FaBloggerB, FaComments, FaDraft2Digital, FaUserFriends } from 'react-icons/fa'
+import { FaFile, FaFolder, FaUser } from 'react-icons/fa6'
 import { IoSettings } from 'react-icons/io5'
 import { Link, useLocation } from 'react-router-dom'
 import BreadcrumbHeader from '../../BootCamp'
+import { RiDraftFill } from 'react-icons/ri'
 
 
 const Layout = ({ children }) => {
@@ -18,6 +19,8 @@ const Layout = ({ children }) => {
         { name: 'Dashboard', link: "/", icon: <AiFillDashboard className='w-full h-full' /> },
         { name: 'Blogs', link: "/blog", icon: <FaBloggerB className='w-full h-full' /> },
         { name: 'Comments', link: "/comments", icon: <FaComments className='w-full h-full' /> },
+        { name: 'Media', link: "/media-file", icon: <FaFolder className='w-full h-full' /> },
+        { name: 'Draft', link: "/draft", icon: <RiDraftFill className='w-full h-full' /> },
         { name: 'Setting', link: "/setting", icon: <IoSettings className='w-full h-full' /> },
         { name: 'Users', link: "/user", icon: <FaUserFriends className='w-full h-full' /> },
     ]

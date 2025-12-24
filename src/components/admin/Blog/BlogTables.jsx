@@ -52,7 +52,7 @@ const BlogTables = () => {
                     />
                 </div>
 
-                <Link to="/create-blog">
+                <Link to="create">
                     <button className='bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-2 flex items-center gap-2 rounded-md transition-all shadow-lg hover:shadow-emerald-500/20'>
                         <FaPlus />
                         <span className="font-medium">Add Blog</span>

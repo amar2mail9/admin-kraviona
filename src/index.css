@@ -15,3 +15,27 @@
         /* Firefox */
     }
 }
+
+
+/* Override Jodit Dark Theme Colors */
+.jodit.jodit_theme_dark {
+    /* Main Background (Editor Area) */
+    --jd-color-background-default: #1f2937;
+    /* Matches Tailwind bg-gray-800 */
+
+    /* Toolbar Background */
+    --jd-color-panel-background: #111827;
+    /* Matches Tailwind bg-gray-900 */
+
+    /* Border Color */
+    --jd-color-border: #374151;
+    /* Matches Tailwind border-gray-700 */
+
+    /* Text Color */
+    --jd-color-text: #e5e7eb;
+    /* Matches Tailwind text-gray-200 */
+
+    /* Icon Colors */
+    --jd-color-icon: #9ca3af;
+    /* Matches Tailwind text-gray-400 */
+}
