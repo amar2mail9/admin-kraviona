@@ -12,9 +12,7 @@ const DraftPage = () => {
                         Drafts
                     </h1>
 
-                    <button className="px-5 py-2 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition">
-                        Create New
-                    </button>
+
                 </div>
 
                 {/* Draft List */}

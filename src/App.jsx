@@ -9,6 +9,9 @@ import CreatePost from "./components/admin/Blog/CreateBlog/CreatePost"
 import MediaPage from "./components/admin/Media/MediaPage"
 import UploadMedia from "./components/admin/Media/UploadMedia"
 import DraftPage from "./components/admin/Draft/DraftPage"
+import CommentsPage from "./components/admin/Comments/CommentsPage"
+import SettingsPage from "./components/admin/Setting/SettingPage"
+import UsersPage from "./components/admin/User/UserPage"
 
 const App = () => {
   return <BrowserRouter>
@@ -38,6 +41,14 @@ const App = () => {
         1
       </Layout>} />
 
+      {/* comments */}
+      <Route path="/comment" element={<CommentsPage />} />
+
+      {/* setting page */}
+      <Route path="/setting" element={<SettingsPage />} />
+
+      {/* user */}
+      <Route path="/user" element={<UsersPage />} />
 
       <Route path="*" element={<PageNotFound />} />
     </Routes>

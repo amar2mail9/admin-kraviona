@@ -2,8 +2,9 @@
 import Layout from '../../Layout/Layout'
 import { FaPlus, } from 'react-icons/fa'
 
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import JoditEditor from 'jodit-react';
+import { CircleX } from 'lucide-react';
 // import JoditBlogEditor from './TextEditor';
 
 const CreatePost = () => {
@@ -62,6 +63,20 @@ const CreatePost = () => {
         Business: ["Marketing", "Finance", "Sales"],
         Education: ["Programming", "Design", "Exams"],
     };
+
+    // Search
+
+    const [searchQuery, setSearchQuery] = useState('');
+    const [data, setData] = useState(mediaFiles);
+    const [filteredData, setFilteredData] = useState([]);
+
+    useEffect(() => {
+        const results = data.filter(item =>
+            item.name.toLowerCase().includes(searchQuery.toLowerCase()) // Adjust 'name' to your data's property
+        );
+        setFilteredData(results);
+    }, [searchQuery, data]);
+
 
     return (
         <Layout>
@@ -228,14 +243,19 @@ const CreatePost = () => {
                 {
                     showImages ? <div className='w-full h-full fixed top-0 z-50 flex items-center backdrop-blur-sm justify-center     p-5 rounded-2xl  border-gray-600 right-0  bg-gray-900/80 border'>
                         <div className='max-w-4xl   rounded-2xl p-4 bg-gray-800'>
-                            <div className='max-w-3xl mx-auto mb-2'>
-                                <input type="text" placeholder='search...' className='bg-gray-800 w-full py-2 px-4 border border-gray-700 rounded-md  focus:ring-1 focus:ring-emerald-500 focus:border-0 focus:outline-0' />
+                            <div className='max-w-3xl mx-auto mb-2 relative'>
+                                <div>
+                                    <input value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} type="text" placeholder='search...' className='bg-gray-800 w-xl py-2 px-4 border border-gray-700 rounded-md  focus:ring-1 focus:ring-emerald-500 focus:border-0 focus:outline-0' />
+                                </div>
+
+                                <button onClick={() => { setShowImages(false) }} className='absolute top-1 right-1 bg-rose-500 w-8 h-8  cursor-pointer hover:bg-rose-700 hover:scale-95  transition ease-linear duration-300  text-xl  rounded-full'>X</button>
+
                             </div>
 
                             <div className='p-6 overflow-y-scroll no-scrollbar  h-[500px] bg-gray-900 grid grid-cols-5 gap-8'>
 
                                 {
-                                    mediaFiles.map((item, idx) => {
+                                    filteredData.map((item, idx) => {
                                         return <div
                                             key={idx}
                                             onClick={() => {

@@ -18,7 +18,7 @@ const Layout = ({ children }) => {
     const menu = [
         { name: 'Dashboard', link: "/", icon: <AiFillDashboard className='w-full h-full' /> },
         { name: 'Blogs', link: "/blog", icon: <FaBloggerB className='w-full h-full' /> },
-        { name: 'Comments', link: "/comments", icon: <FaComments className='w-full h-full' /> },
+        { name: 'Comments', link: "/comment", icon: <FaComments className='w-full h-full' /> },
         { name: 'Media', link: "/media-file", icon: <FaFolder className='w-full h-full' /> },
         { name: 'Draft', link: "/draft", icon: <RiDraftFill className='w-full h-full' /> },
         { name: 'Setting', link: "/setting", icon: <IoSettings className='w-full h-full' /> },
