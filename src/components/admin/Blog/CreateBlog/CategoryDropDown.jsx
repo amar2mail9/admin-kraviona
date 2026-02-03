@@ -10,15 +10,20 @@ const CategoryDropdown = ({ categoryValue, setCategoryValue }) => {
 
         const fetchCategories = async () => {
             try {
+                console.log("category Loading....");
+                
                 const res = await fetch(
-                    `${import.meta.env.VITE_API_URL}/private-categories`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${localStorage.getItem("token")}`,
-                        },
-                    }
+                    `${import.meta.env.VITE_API_URL}/public-categories`
+                    // {
+                    //     headers: {
+                    //         Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    //     },
+                    // }
                 );
                 const data = await res.json();
+                console.log("category", data);
+                 console.log("category Loaded");
+
                 if (res.ok) setCategories(data?.data || []);
             } catch (err) {
                 console.error(err);

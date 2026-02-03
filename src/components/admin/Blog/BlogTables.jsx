@@ -23,6 +23,8 @@ const BlogTables = () => {
                 toast.error(errorData.message)
             } else {
                 setBlogs(data.data)
+                console.log(data.data);
+
             }
 
         } catch (error) {
@@ -110,7 +112,7 @@ const BlogTables = () => {
                                                 ? "bg-green-900/30 text-green-400 border-green-900"
                                                 : "bg-yellow-900/30 text-yellow-400 border-yellow-900"
                                                 }`}>
-                                                {blog.status}
+                                                {blog?.status}
                                             </span>
                                         </td>
                                         <td className="px-5 py-4 text-sm">
