@@ -18,24 +18,39 @@
 
 
 /* Override Jodit Dark Theme Colors */
-.jodit.jodit_theme_dark {
-    /* Main Background (Editor Area) */
-    --jd-color-background-default: #1f2937;
-    /* Matches Tailwind bg-gray-800 */
+/* Editor main container */
+.jodit-dark .jodit-container {
+  background-color: #111827; /* bg-gray-900 */
+  border: 1px solid #374151; /* gray-700 */
+}
 
-    /* Toolbar Background */
-    --jd-color-panel-background: #111827;
-    /* Matches Tailwind bg-gray-900 */
+/* Toolbar */
+.jodit-dark .jodit-toolbar__box {
+  background-color: #1f2937; /* bg-gray-800 */
+  border-bottom: 1px solid #374151;
+}
 
-    /* Border Color */
-    --jd-color-border: #374151;
-    /* Matches Tailwind border-gray-700 */
+/* Editor content area */
+.jodit-dark .jodit-wysiwyg {
+  background-color: #111827;
+  color: #f9fafb; /* text-gray-50 */
+}
 
-    /* Text Color */
-    --jd-color-text: #e5e7eb;
-    /* Matches Tailwind text-gray-200 */
+/* Placeholder text */
+.jodit-dark .jodit-placeholder {
+  color: #9ca3af; /* text-gray-400 */
+}
 
-    /* Icon Colors */
-    --jd-color-icon: #9ca3af;
-    /* Matches Tailwind text-gray-400 */
+/* Buttons */
+.jodit-dark .jodit-toolbar-button {
+  color: #e5e7eb;
+}
+
+.jodit-dark .jodit-toolbar-button:hover {
+  background-color: #374151;
+}
+.jodit-dark .jodit-wysiwyg {
+  min-height: 500px;
+  max-height: 500px;
+  overflow-y: auto;
 }

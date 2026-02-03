@@ -1,6 +1,10 @@
 import React from "react"
-import { BrowserRouter, Route, Routes } from "react-router-dom"
-import { SignInPage } from "./components/Public/SignIn/SignInPage"
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom"
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+// Components
+import SignInPage from "./components/Public/SignIn/SignInPage"
 import Dashboard from "./components/admin/Dashboard/Dashboard"
 import PageNotFound from "./components/PageNotFound"
 import BlogPage from "./components/admin/Blog/BlogPage"
@@ -13,46 +17,71 @@ import CommentsPage from "./components/admin/Comments/CommentsPage"
 import SettingsPage from "./components/admin/Setting/SettingPage"
 import UsersPage from "./components/admin/User/UserPage"
 
+// 1. Private Route: ONLY allows access if token exists
+const PrivateRoute = ({ children }) => {
+  const token = localStorage.getItem("token");
+  // FIX: return children directly, not { children }
+  return token ? children : <Navigate to="/login" replace />;
+}
+
+// 2. Public Route: ONLY allows access if token DOES NOT exist (e.g., prevents logged-in users from seeing Login page)
+const PublicRoute = ({ children }) => {
+  const token = localStorage.getItem("token");
+  // If token exists, send them to Dashboard. If not, let them see the login page.
+  return token ? <Navigate to="/" replace /> : children;
+}
+
 const App = () => {
-  return <BrowserRouter>
+  return (
+    <BrowserRouter>
+      <Routes>
 
-    <Routes>
-      {/* home page  */}
-      <Route path="/" element={<Dashboard />} />
+        {/* --- Public Routes (Wrapped in PublicRoute) --- */}
+        <Route path="/login" element={
+          <PublicRoute>
+            <SignInPage />
+          </PublicRoute>
+        } />
 
-      {/* login page */}
-      <Route path="/login" element={<SignInPage />} />
+        {/* --- Protected Routes (Wrapped in PrivateRoute) --- */}
+        <Route path="/" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
 
-      {/* media */}
-      <Route path="/media-file" element={<MediaPage />} />
-      <Route path="/media-file/upload" element={<UploadMedia />} />
+        {/* Media */}
+        <Route path="/media-file" element={<PrivateRoute><MediaPage /></PrivateRoute>} />
+        <Route path="/media-file/upload" element={<PrivateRoute><UploadMedia /></PrivateRoute>} />
 
-      {/* blog page  */}
-      <Route path="/blog" element={<BlogPage />} />
+        {/* Blog */}
+        <Route path="/blog" element={<PrivateRoute><BlogPage /></PrivateRoute>} />
+        <Route path="/blog/create" element={<PrivateRoute><CreatePost /></PrivateRoute>} />
 
-      {/* add blog */}
-      <Route path="/blog/create" element={<CreatePost />} />
+        <Route path="/blog/:slug" element={
+          <PrivateRoute>
+            <Layout>
+              {/* Placeholder content */}
+              <div>Blog View</div>
+            </Layout>
+          </PrivateRoute>
+        } />
 
-      {/* draft */}
-      <Route path="/draft" element={<DraftPage />} />
+        {/* Drafts */}
+        <Route path="/draft" element={<PrivateRoute><DraftPage /></PrivateRoute>} />
 
-      {/* view blog */}
-      <Route path="/blog/:slug" element={<Layout>
-        1
-      </Layout>} />
+        {/* Comments */}
+        <Route path="/comment" element={<PrivateRoute><CommentsPage /></PrivateRoute>} />
 
-      {/* comments */}
-      <Route path="/comment" element={<CommentsPage />} />
+        {/* Settings */}
+        <Route path="/setting" element={<PrivateRoute><SettingsPage /></PrivateRoute>} />
 
-      {/* setting page */}
-      <Route path="/setting" element={<SettingsPage />} />
+        {/* Users */}
+        <Route path="/user" element={<PrivateRoute><UsersPage /></PrivateRoute>} />
 
-      {/* user */}
-      <Route path="/user" element={<UsersPage />} />
+        {/* 404 Page (Accessible by anyone) */}
+        <Route path="*" element={<PageNotFound />} />
 
-      <Route path="*" element={<PageNotFound />} />
-    </Routes>
-  </BrowserRouter>
+      </Routes>
+      <ToastContainer />
+    </BrowserRouter>
+  )
 }
 
 export default App

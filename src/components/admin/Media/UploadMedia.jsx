@@ -1,22 +1,29 @@
-import React, { useState, useRef } from 'react'
-import { FaCloudUploadAlt, FaImage, FaTimes, FaCheck } from 'react-icons/fa'
+import React, { useState, useRef, useEffect } from 'react'
+import { FaCloudUploadAlt, FaImage, FaTimes } from 'react-icons/fa'
 import Layout from '../Layout/Layout';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const UploadMedia = () => {
     const [previewUrl, setPreviewUrl] = useState(null);
-    const [selectedFile, setSelectedFile] = useState(null); // Track the actual file
-    const [isUploading, setIsUploading] = useState(false); // Track upload status
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [isUploading, setIsUploading] = useState(false);
 
     const fileInputRef = useRef(null);
+
+    // 1. Cleanup memory on unmount (prevents memory leaks from object URLs)
+    useEffect(() => {
+        return () => {
+            if (previewUrl) URL.revokeObjectURL(previewUrl);
+        }
+    }, [previewUrl]);
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            // Clean up old preview
             if (previewUrl) URL.revokeObjectURL(previewUrl);
-
             setPreviewUrl(URL.createObjectURL(file));
-            setSelectedFile(file); // Save file for submission
+            setSelectedFile(file);
         }
     };
 
@@ -27,19 +34,45 @@ const UploadMedia = () => {
         if (fileInputRef.current) fileInputRef.current.value = '';
     };
 
-    const handleSubmit = () => {
-        if (!selectedFile) return;
+    const handleSubmit = async () => {
+        if (!selectedFile) return toast.warn("Please select a file first");
 
-        // Simulate API Upload
         setIsUploading(true);
-        console.log("Uploading file:", selectedFile.name);
 
-        setTimeout(() => {
-            alert("File Uploaded Successfully!");
+        // 2. Fix: Create FormData for file upload
+        const formData = new FormData();
+        formData.append('media', selectedFile);
+        // Note: Check your backend controller. Does it expect 'file', 'image', or 'media'? 
+        // I used 'file' as it is standard.
+
+        const API_URI = import.meta.env.VITE_API_URL;
+        const token = localStorage.getItem("token");
+
+        try {
+            // 3. Fix: Send Request with Headers (Token + Multipart)
+            const res = await axios.post(`${API_URI}/api/v1/media`, formData, {
+                headers: {
+                    'Authorization': `Bearer ${token}`, // Essential for protected routes
+                    'Content-Type': 'multipart/form-data' // Essential for files
+                }
+            });
+            console.log(res);
+
+            // Handle Success
+            if (res.data.success) {
+                toast.success(res.data.message || "File Uploaded Successfully!");
+                handleRemoveImage(); // Clear the form
+            } else {
+                toast.error(res.data.message || "Upload Failed");
+            }
+
+        } catch (error) {
+            console.error("Upload error:", error);
+            const errMsg = error.response?.data?.message || "Something went wrong during upload";
+            toast.error(errMsg);
+        } finally {
             setIsUploading(false);
-            // Optional: Reset form after success
-            handleRemoveImage();
-        }, 2000);
+        }
     };
 
     return (

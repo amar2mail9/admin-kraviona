@@ -1,27 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa'; // Added icons for actions
 import { FaEye } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const BlogTables = () => {
     // State for search and pagination
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 6; // Adjustable: how many rows per page
+    const [blogs, setBlogs] = useState([
+
+    ])
 
     // Fixed Dummy Data (Unique IDs)
-    const blogs = [
-        { id: 1, title: "Getting Started with React Router", category: "Development", author: "Alex Doe", date: "2024-12-20", status: "Published", views: 1240 },
-        { id: 2, title: "Tailwind CSS Tips & Tricks", category: "Design", author: "Sarah Smith", date: "2024-12-21", status: "Draft", views: 0 },
-        { id: 3, title: "Understanding Node.js Event Loop", category: "Backend", author: "Alex Doe", date: "2024-12-22", status: "Published", views: 850 },
-        { id: 4, title: "Mastering Async/Await", category: "Backend", author: "John Doe", date: "2024-12-23", status: "Published", views: 120 },
-        { id: 5, title: "React Hooks Deep Dive", category: "Development", author: "Alex Doe", date: "2024-12-24", status: "Published", views: 300 },
-        { id: 6, title: "CSS Grid vs Flexbox", category: "Design", author: "Sarah Smith", date: "2024-12-25", status: "Published", views: 500 },
-        { id: 7, title: "Deploying to Vercel", category: "DevOps", author: "Alex Doe", date: "2024-12-26", status: "Draft", views: 0 },
-        { id: 8, title: "MongoDB Aggregations", category: "Database", author: "Alex Doe", date: "2024-12-27", status: "Published", views: 900 },
-        { id: 9, title: "Next.js 14 Features", category: "Development", author: "Sarah Smith", date: "2024-12-28", status: "Published", views: 1500 },
-        { id: 10, title: "Docker for Beginners", category: "DevOps", author: "John Doe", date: "2024-12-29", status: "Draft", views: 0 },
-    ];
+    const fetchBlog = async () => {
+        try {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/public-blogs`)
+            const data = await res.json()
+            if (!res.ok) {
+                const errorData = await res.json()
+                toast.error(errorData.message)
+            } else {
+                setBlogs(data.data)
+            }
+
+        } catch (error) {
+            toast.error(error.message)
+        }
+    }
 
     // 1. Filter Logic
     const filteredBlogs = blogs.filter(blog =>
@@ -34,7 +41,7 @@ const BlogTables = () => {
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentBlogs = filteredBlogs.slice(indexOfFirstItem, indexOfLastItem);
     const totalPages = Math.ceil(filteredBlogs.length / itemsPerPage);
-
+    useEffect(() => { fetchBlog() }, [])
     return (
         <div className='mt-3'>
             {/* --- Header Section (Search + Add) --- */}
@@ -80,19 +87,26 @@ const BlogTables = () => {
                                         <td className="px-5 py-4 text-sm">
                                             <div className="flex items-center">
                                                 <div className="ml-3">
-                                                    <p className="text-gray-200 whitespace-no-wrap font-medium">{blog.title}</p>
-                                                    <p className="text-gray-500 text-xs mt-0.5">by {blog.author}</p>
+                                                    <p className="text-gray-200 whitespace-no-wrap capitalize font-medium">{blog.title}</p>
+                                                    <p className="text-gray-500 text-xs mt-0.5">by {blog?.authorDetails?.name}</p>
                                                 </div>
                                             </div>
                                         </td>
                                         <td className="px-5 py-4 text-sm">
                                             <span className="px-2 py-1 text-xs font-medium bg-gray-800 text-gray-300 rounded border border-gray-700">
-                                                {blog.category}
+                                                {blog?.categoryName}
                                             </span>
                                         </td>
-                                        <td className="px-5 py-4 text-sm text-gray-400">{blog.date}</td>
+                                        <td className="px-5 py-4 text-sm text-gray-400">
+                                            {new Intl.DateTimeFormat("en-IN", {
+                                                day: "2-digit",
+                                                month: "short",
+                                                year: "numeric",
+                                            }).format(new Date(blog?.createdAt))}
+                                        </td>
+
                                         <td className="px-5 py-4 text-sm">
-                                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${blog.status === "Published"
+                                            <span className={`inline-flex capitalize items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${blog.status === "Published"
                                                 ? "bg-green-900/30 text-green-400 border-green-900"
                                                 : "bg-yellow-900/30 text-yellow-400 border-yellow-900"
                                                 }`}>
