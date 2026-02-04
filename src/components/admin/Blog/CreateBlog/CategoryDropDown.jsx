@@ -16,10 +16,13 @@ const CategoryDropdown = ({ categoryValue, setCategoryValue }) => {
                     `${import.meta.env.VITE_API_URL}/private-categories`,
                     {
                         headers: {
+                            "Content-Type": "application/json",
                             Authorization: `Bearer ${localStorage.getItem("token")}`,
                         },
                     }
                 );
+                console.log(res);
+
                 const data = await res.json();
                 console.log("category", data);
                 console.log("category Loaded");

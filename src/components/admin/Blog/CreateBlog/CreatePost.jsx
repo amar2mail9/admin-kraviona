@@ -26,6 +26,7 @@ const CreatePost = () => {
     height: 600,
     placeholder: "Start typing your article here...",
     toolbarSticky: false,
+
   };
 
   const submitBlog = async () => {
@@ -41,7 +42,7 @@ const CreatePost = () => {
       // ✅ payload updated
       const payload = {
         title,
-        description,
+        description: description,
         content,
         category: categoryValue,
         status: statusValue,
@@ -63,6 +64,8 @@ const CreatePost = () => {
       const data = await res.json();
 
       if (!res.ok) {
+        console.log(data);
+
         throw new Error(data.message || "Failed to create blog");
       }
 
