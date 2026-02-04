@@ -1,11 +1,7 @@
 import React, { useState } from "react";
 import Layout from "../../Layout/Layout";
 import JoditEditor from "jodit-react";
-import {
-  Image as ImageIcon,
-  Save,
-  Send,
-} from "lucide-react";
+import { Image as ImageIcon, Save, Send } from "lucide-react";
 import { toast } from "react-toastify";
 
 import CategoryDropdown from "./CategoryDropDown";
@@ -26,7 +22,7 @@ const CreatePost = () => {
     height: 600,
     placeholder: "Start typing your article here...",
     toolbarSticky: false,
-
+    theme: "dark", // optional (Jodit ka own theme)
   };
 
   const submitBlog = async () => {
@@ -49,17 +45,14 @@ const CreatePost = () => {
         thumbnail,
       };
 
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/new-blog`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          body: JSON.stringify(payload),
-        }
-      );
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/new-blog`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(payload),
+      });
 
       const data = await res.json();
 
@@ -143,11 +136,12 @@ const CreatePost = () => {
             />
 
             {/* Editor */}
-            <div className="bg-white rounded-2xl overflow-hidden">
+            <div className="bg-white rounded-2xl not-tailwind overflow-hidden">
               <JoditEditor
                 value={content}
                 config={editorConfig}
                 onBlur={(v) => setContent(v)}
+                className="disble-taileind"
               />
             </div>
           </div>
